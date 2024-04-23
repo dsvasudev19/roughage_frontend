@@ -5,9 +5,10 @@ import {Scrollbar} from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
-import Card from './../Cards/DealCard/Card' 
+import Card from './../Cards/DealCard/Card3'
 import './styles.css';
 import {Pagination, Navigation} from 'swiper/modules';
+import CardList from './../Cards/Product/CardList'
 
 export default function App() {
     const [swiperRef, setSwiperRef] = useState(null);
@@ -46,7 +47,7 @@ export default function App() {
                 }}
 
                 // modules={[Pagination, Navigation]}
-                className="mySwiper h-fit"
+                className="mySwiper h-auto"
             >
                 <SwiperSlide className=''><Card /></SwiperSlide>
                 <SwiperSlide className=''><Card /></SwiperSlide>

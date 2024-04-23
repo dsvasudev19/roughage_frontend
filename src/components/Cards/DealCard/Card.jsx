@@ -6,9 +6,9 @@ import {Card} from "flowbite-react";
 function Component() {
     return (
         <Card
-            className="max-w-sm"
+            className="min-w-[20%] min-h-[20rem]"
             imgAlt="Apple Watch Series 7 in colors pink, silver, and black"
-            imgSrc="/public/Food/product1.webp"
+            imgSrc="/Food/product1.webp"
         >
             <a href="#">
                 <h5 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white text-left">
