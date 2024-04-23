@@ -8,7 +8,15 @@ export default {
     flowbite.content(),
   ],
   theme: {
-    extend: {},
+    extend: {
+      container: {
+        center: true,
+        padding: '2rem',
+      },
+      colors: {
+        clifford: "#da373d",
+      },
+    },
   },
   plugins: [
     flowbite.plugin(),

@@ -1,0 +1,168 @@
+*{
+    box-sizing: border-box;
+}
+.text-right{
+    text-align: center;
+
+}
+a{
+    text-decoration: none;
+}
+.wrapper{
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+}
+.coming-soon-info{
+    background: url('/src/assets/bg/bg-1.jpg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    min-height: calc(100vh - 0px);
+    position: relative;
+    z-index: 0;
+    display: grid;
+    padding: 10px 0;
+}
+.coming-soon-info:before{
+    content: "";
+    background: rgba(0,0,0,0.6);
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom:0;
+    right: 0;
+    z-index: -1;
+}
+.header{
+    display: grid;
+    align-items: center;
+    grid-template-columns: 1fr 1fr;
+    grid-gap:0 10px;
+}
+.coming-soon-info a.brand-logo{
+    color: #fff;
+    font-weight: 400;
+    font-size: 36px;
+    text-transform: capitalize;
+    position: relative;
+    font-family: 'Permanent Marker', cursive;
+    letter-spacing: 1px;
+}
+.coming-soon-info .coming-back{
+    margin: 80px auto 60px;
+    max-width: 600px;
+    text-align: center;
+    padding: 1em 0;
+}
+.coming-soon-info h1
+
+{
+   margin:0;
+   font-size:70px;
+   font-weight:900;
+   color:#fff;
+   line-height:95px;
+   text-transform:capitalize;
+   margin-bottom:40px;
+   font-family: 'Satisfy';
+}
+.coming-soon-info p.t-text
+{
+   line-height:26px;
+   opacity:0.9;
+   font-family: Poppins;
+}
+.countdown
+{
+   margin:auto;
+   display:table;
+   font-size:18px;
+   font-weight:500;
+
+}
+.coming-soon-info .number
+{
+      font-family: Poppins;
+}
+::-webkit-input-placeholder {  
+   font-family: Poppins;
+ }
+.coming-soon-info .countdown>div
+{
+   float: left;
+   min-width:100px;
+   margin:40px 10px 0 0;
+   font-size:50px;
+   line-height:70px;
+   font-weight:700;
+   color:#fff;
+   padding:0px 15px;
+}
+.coming-soon-info .countdown>div:last-child
+{
+   border-right:none;
+}
+
+.coming-soon-info p
+{
+   color:#eee;
+   font-size: 17px;
+   font-weight:400;
+}
+.coming-soon-info .countdown span
+{
+   position:relative;
+   display:block;
+   font-size:12px;
+   line-height:28px;
+   text-align:center;
+   text-transform:uppercase;
+   font-weight:600;
+   letter-spacing:1px;
+   color:#eee;
+}
+.coming-soon-info input[type="text"]
+{
+   padding:1em 1.5em;
+   border: solid 1px #ffffff;
+   background: transparent !important;
+   width:88%;
+   margin-right:10px;
+   font-size:17px;
+   color:#999999;
+   outline:none;
+   display:inline-block;
+   background:#ffffff;
+   border-radius:6px;
+}
+.coming-soon-info input[type="text"]::placeholder{
+   color: #eee !important;
+}
+.coming-soon-info form
+{
+   max-width:500px;
+   margin:0 50px;
+   margin-top:40px;
+   display:flex;
+}
+.send
+{
+   color:#fff;
+   padding:1em 1.5em;
+   font-size:17px;
+   text-align:center;
+   cursor:pointer;
+   text-decoration:none;
+   background:#ff9800;
+   border:1px solid #fff;
+   transition:0.3s all;
+   border-radius:6px;
+}
+.send:hover
+{
+   background:#e98c03;
+   border: 1px solid #e98c03;
+}

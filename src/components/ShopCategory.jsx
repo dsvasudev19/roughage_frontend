@@ -48,7 +48,7 @@ const categoryData=[
 ]
 const ShopCategory = () => {
     return (
-        <div className='justify-start text-left gap-3 h-fit mb-3 pl-3 pr-3'>
+        <div className='justify-start text-left gap-3 h-fit mb-3'>
             <Header1 title='Shop By Category' />
             <div className='flex gap-3 overflow-x-auto mb-1'>
                 {

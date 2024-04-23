@@ -1,0 +1,10 @@
+/*! footer */
+hr {
+    border-color: rgba(116, 116, 116, 0.733) !important;
+  }
+  hr.title {
+    border-color: tomato !important;
+  }
+  footer a:hover {
+    color: #e98c03;
+  }
