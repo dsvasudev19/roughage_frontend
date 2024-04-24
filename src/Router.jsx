@@ -23,8 +23,8 @@ const AppRoutes = () => {
         <BrowserRouter>
             <Routes>
                 <Route path="/" element={<Layout />}>
-                    <Route path="/" element={<Home />} />
                     <Route path="/home" element={<HomePage />} />
+                    <Route path="/" element={<Home />} />
                     <Route path="/about" element={<About />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />
@@ -33,8 +33,7 @@ const AppRoutes = () => {
                     <Route path="/twofactor" element={<TwoFactor />} />
                     <Route path='/contact' element={<Contact />} />
                     <Route path="/products" element={<ProductLayout />}>
-
-                    <Route path="/products" element={<BackUp />} />
+                        <Route path="/products" element={<BackUp />} />
                     </Route>
                     
                     <Route path="/cart" element={<Cart />} />
