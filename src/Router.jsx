@@ -23,8 +23,8 @@ const AppRoutes = () => {
         <BrowserRouter>
             <Routes>
                 <Route path="/" element={<Layout />}>
-                    <Route path="/home" element={<HomePage />} />
-                    <Route path="/" element={<Home />} />
+                    <Route path="/" element={<HomePage />} />
+                    <Route path="/home" element={<Home />} />
                     <Route path="/about" element={<About />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />
