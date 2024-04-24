@@ -32,7 +32,10 @@ const AppRoutes = () => {
                     <Route path="/resetpassword" element={<ResetPassword />} />
                     <Route path="/twofactor" element={<TwoFactor />} />
                     <Route path='/contact' element={<Contact />} />
+                    <Route path="/products" element={<ProductLayout />}>
+
                     <Route path="/products" element={<BackUp />} />
+                    </Route>
                     
                     <Route path="/cart" element={<Cart />} />
                     <Route path='/product' element={<ProductDetails />} />
