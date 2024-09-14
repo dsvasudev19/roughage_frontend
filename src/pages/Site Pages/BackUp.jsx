@@ -1,6 +1,4 @@
 "use client";
-
-
 import Card2 from './../../components/Cards/Product/Card2'
 import SideBar from './../../components/Sidebar/SideBar'
 import SideBarMobile from './../../components/Sidebar/SideBarMobile'
@@ -8,9 +6,13 @@ import toast, {Toaster} from "react-hot-toast"
 import {useSearch} from "../../SearchContext";
 import {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
+import axios from 'axios';
+
 export function Component() {
   const {products} = useSearch();
   const [filteredProducts, setFilteredProducts] = useState(products);
+  const [category,setCategory]=useState("")
+
   const [filter, setFilter] = useState({
     price: "",
     brand: "",
@@ -24,14 +26,37 @@ export function Component() {
       return filtered;
     })
 
-
-  }, [filter])
+  }, [filter,category])
 
   useEffect(() => {
     setFilteredProducts((prev) => {
       return products;
     })
   }, [])
+
+  useEffect(()=>{
+    const urlSearchParams=new URLSearchParams(window.location.search)
+    const categoryFound=urlSearchParams.get("category")
+    if(categoryFound){
+      setCategory(categoryFound);
+    }
+  },[])
+
+  const getProductsOfCategory=async()=>{
+    try {
+      const res = await axios.get(`https://api.escuelajs.co/api/v1/categories/${category}/products`)
+      if(res.status===200){
+        setFilteredProducts(res.data)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  useEffect(()=>{
+    if(category!==null && category!==undefined && category!==""){
+      getProductsOfCategory()
+    }
+  },[category])
 
   return (
     <div className="justify-center">

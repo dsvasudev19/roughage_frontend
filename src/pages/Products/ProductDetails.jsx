@@ -1,16 +1,21 @@
-import {MinusCircleIcon, PlusCircleIcon} from "@heroicons/react/24/outline";
-import {HeartIcon} from "@heroicons/react/24/outline";
-import React, {useEffect, useState} from "react";
-import {StarIcon} from "@heroicons/react/24/solid";
-import {StarIcon as OutlineIcon} from "@heroicons/react/24/outline";
-import reviews from './../../data/review'
-import './ProductDetails.css'
-import products from './../../data/products'
+import { MinusCircleIcon, PlusCircleIcon } from "@heroicons/react/24/outline";
+import { HeartIcon } from "@heroicons/react/24/outline";
+import React, { useEffect, useState } from "react";
+import { StarIcon } from "@heroicons/react/24/solid";
+import { StarIcon as OutlineIcon } from "@heroicons/react/24/outline";
+import reviews from "./../../data/review";
+import "./ProductDetails.css";
+import products from "./../../data/products";
+import Review from "../../components/Cards/ReviewCard/Review";
+import toast from "react-hot-toast";
 
-function ProductDetails({...props}) {
-
+function ProductDetails({ ...props }) {
+  const [review, setReview] = useState({
+    rating: "",
+    content: "",
+    user: { name: "Darse" },
+  });
   const [id, setId] = useState("");
-  console.log(reviews)
   const [product, setProduct] = useState({
     id: 16,
     title: "Classic White Tee - Timeless Style and Comfort",
@@ -32,37 +37,47 @@ function ProductDetails({...props}) {
     category: "Clothes",
   });
 
-
   const [loading, setLoading] = useState(false);
   const [variantIndex, setVariantIndex] = useState(0);
   const [imageIndex, setImageIndex] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [rating, setRating] = useState(5);
-
+  const [filteredReviews, setFilteredReviews] = useState(reviews);
 
   useEffect(() => {
     const searchURL = window.location.search;
     const urlParams = new URLSearchParams(searchURL);
-    const productId = urlParams.get('productId');
-    console.log(productId);
+    const productId = urlParams.get("productId");
     setId((prev) => {
       return productId;
     });
-  }, [])
+  }, []);
 
   useEffect(() => {
     if (id) {
-      const product = products?.find((i) => i.id == id)
-      console.log(product)
+      const product = products?.find((i) => i.id == id);
+      console.log(product);
       setProduct((prev) => {
         return {
           ...product,
           variants: ["SM", "MD", "LG", "XL"],
           prices: [199, 249, 329, 459],
         };
-      })
+      });
     }
   }, [id]);
+
+  const postReview = async () => {
+    try {
+      if (!review.rating || !review.content) {
+        toast.error("Please provide rating and Review to post");
+      } else {
+        setFilteredReviews([...filteredReviews, review]);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className="container">
@@ -82,8 +97,9 @@ function ProductDetails({...props}) {
                   <img
                     src={image}
                     alt="Product1"
-                    class={`w-20 cursor-pointer rounded-xl ${ index === imageIndex ? "outline" : ""
-                      }`}
+                    class={`w-20 cursor-pointer rounded-xl ${
+                      index === imageIndex ? "outline" : ""
+                    }`}
                     onClick={() => {
                       setImageIndex((prev) => {
                         return index;
@@ -97,9 +113,9 @@ function ProductDetails({...props}) {
               <div class="flex flex-wrap items-start gap-4">
                 <div>
                   <h2 class="text-2xl font-extrabold text-gray-800">
-                    Adjective Attire | T-shirt
+                    {product.title} | {product.category}
                   </h2>
-                  <p class="text-sm text-gray-400 mt-2">Well-Versed Commerce</p>
+                  <p class="text-sm text-gray-400 mt-2">Roughage Commerce</p>
                 </div>
                 <div class="ml-auto flex flex-wrap gap-4">
                   <button type="button">
@@ -142,11 +158,11 @@ function ProductDetails({...props}) {
               <hr class="my-6" />
 
               <div class="flex flex-wrap gap-4 mt-4">
-                <p class="text-gray-800 text-5xl font-bold">
-                  ₹{product.prices[variantIndex]}
-                </p>
+                <p class="text-gray-800 text-5xl font-bold">₹{product.price}</p>
                 <p class="text-gray-400 text-lg">
-                  <strike>₹16</strike>{" "}
+                  <strike>
+                    ₹{Math.ceil(product.price + product.price * 0.1)}
+                  </strike>{" "}
                   <span class="text-sm ml-1">Tax included</span>
                 </p>
               </div>
@@ -199,8 +215,9 @@ function ProductDetails({...props}) {
                   {product.variants.map((variant, index) => (
                     <button
                       type="button"
-                      className={`w-12 h-12 border-2 hover:border-gray-800 ${ index === variantIndex ? "border-gray-800" : ""
-                        } font-bold text-sm rounded-full flex items-center justify-center shrink-0`}
+                      className={`w-12 h-12 border-2 hover:border-gray-800 ${
+                        index === variantIndex ? "border-gray-800" : ""
+                      } font-bold text-sm rounded-full flex items-center justify-center shrink-0`}
                       onClick={() => {
                         setVariantIndex((prev) => {
                           return index;
@@ -244,7 +261,7 @@ function ProductDetails({...props}) {
                       if (prev - 1 > 0) {
                         return prev - 1;
                       } else {
-                        return 1
+                        return 1;
                       }
                     });
                   }}
@@ -306,16 +323,9 @@ function ProductDetails({...props}) {
               <h3 class="text-lg font-bold text-gray-800">
                 Product Description
               </h3>
-              <p class="text-sm text-gray-400 mt-4">
-                Elevate your casual style with our premium men's t-shirt.
-                Crafted for comfort and designed with a modern fit, this
-                versatile shirt is an essential addition to your wardrobe. The
-                soft and breathable fabric ensures all-day comfort, making it
-                perfect for everyday wear. Its classic crew neck and short
-                sleeves offer a timeless look.
-              </p>
+              <p class="text-sm text-gray-400 mt-4">{product.description}</p>
             </div>
-            <ul class="space-y-3 list-disc mt-6 pl-4 text-sm text-gray-400">
+            {/* <ul class="space-y-3 list-disc mt-6 pl-4 text-sm text-gray-400">
               <li>
                 A gray t-shirt is a wardrobe essential because it is so
                 versatile.
@@ -332,29 +342,12 @@ function ProductDetails({...props}) {
                 You can add your own designs, paintings, or embroidery to make
                 it your own.
               </li>
-            </ul>
+            </ul> */}
           </div>
           <hr className="my-8" />
-          
+
           <div className="gap-4 mt-8">
-          
-            {/* <blockquote class="relative w-full bg-inherit p-5 border border-gray-200 break-inside-avoid-column">
-              <div class="flex items-center mt-1">
-                <svg class="w-4 h-4 fill-current text-yellow-300" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z" /></svg>
-                <svg class="w-4 h-4 fill-current text-yellow-300" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z" /></svg>
-                <svg class="w-4 h-4 fill-current text-yellow-300" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z" /></svg>
-                <svg class="w-4 h-4 fill-current text-yellow-300" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z" /></svg>
-                <svg class="w-4 h-4 fill-current text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z" /></svg>
-              </div>
-              <h2 class="text-sm">“Laravel takes the pain out of building modern, scalable web apps.“</h2>
-              <div class="mt-5 flex items-start gap-4">
-                <img src="https://www.svgrepo.com/show/491978/gas-costs.svg" class="w-10 h-10 object-cover object-center" alt="Aaron Francis" />
-                  <div class="text-xs">
-                    <cite class="not-italic">Aaron Francis</cite>
-                    <p class="text-gray-700"><a href="" target="_blank" class="text-red-500">XYZ</a></p>
-                  </div>
-              </div>
-            </blockquote> */}
+            
             <section class="bg-white pb-4">
               <div class="max-w-screen-xl mx-auto">
                 {/* <h2 class="font-black text-black text-center text-3xl leading-none uppercase max-w-2xl mx-auto mb-12">What our Customers
@@ -436,14 +429,18 @@ function ProductDetails({...props}) {
                     </div>
                   </div>
                 </div> */}
-                <h2 class="font-black text-black text-center text-3xl leading-none uppercase max-w-2xl mx-auto mb-12">What our Customers
-                  Are Saying</h2>
+                <h2 class="font-black text-black text-center text-3xl leading-none uppercase max-w-2xl mx-auto mb-12">
+                  What our Customers Are Saying
+                </h2>
                 <div className="block md:flex gap-6">
                   <div className="w-full">
-                    <h1 className="text-3xl font-bold m-4 ml-0">Write a Review </h1>
+                    <h1 className="text-3xl font-bold m-4 ml-0">
+                      Write a Review{" "}
+                    </h1>
                     <div id="reviewSubmission" className="p-3 pl-0">
                       <label className="flex gap-1 my-3">
-                        {Array.from({length: 5}).map((_, index) => {
+                        {Array.from({ length: 5 }).map((_, index) => {
+                          const number=index+1;
                           if (index <= rating) {
                             return (
                               <StarIcon
@@ -452,6 +449,7 @@ function ProductDetails({...props}) {
                                   setRating((prev) => {
                                     return index;
                                   });
+                                  setReview({...review, rating: number });
                                 }}
                               />
                             );
@@ -463,6 +461,7 @@ function ProductDetails({...props}) {
                                 setRating((prev) => {
                                   return index;
                                 });
+                                setReview({...review, rating: number });
                               }}
                             />
                           );
@@ -470,119 +469,39 @@ function ProductDetails({...props}) {
                       </label>
 
                       <form class="max-w-xl my-3">
-                        
                         <div class="relative">
-
                           <textarea
                             type="text"
                             rows={5}
                             id="default-search"
                             class="block w-full p-4  text-lg text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             placeholder="Write a Review"
+                            onChange={(e) => {
+                              setReview({ ...review, content: e.target.value });
+                            }}
                             required
                           />
-                          
                         </div>
                         <button
-                          type="submit"
+                          // type="submit"
                           class="text-white mt-5 bg-cyan-700 hover:bg-cyan-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-lg px-4 py-2 dark:bg-cyan-600 dark:hover:bg-cyan-700 dark:focus:ring-cyan-800"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            postReview();
+                          }}
                         >
                           Submit
                         </button>
                       </form>
                     </div>
                   </div>
-                  
+
                   <div className="w-full gap-y-6">
-                    
-                    <div class="bg-gray-200 rounded-lg p-4 m-4 w-full">
-                      <div className="flex justify-between items-center m-3">
-                      
-                        <div class="flex items-center justify-center space-x-2">
-                          <svg class="text-yellow-500 w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
-                            fill="currentColor" stroke="currentColor">
-                            <path
-                              d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
-                            </path>
-                          </svg>
-                          <svg class="text-yellow-500 w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
-                            fill="currentColor" stroke="currentColor">
-                            <path
-                              d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
-                            </path>
-                          </svg>
-                          <svg class="text-yellow-500 w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
-                            fill="currentColor" stroke="currentColor">
-                            <path
-                              d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
-                            </path>
-                          </svg>
-                        </div>
-                        <p class="font-bold uppercase">John Doe</p>
-                      </div>
-                      <p class="text-xl font-light italic text-gray-700">This podcast is amazing! The storytelling and production
-                        quality are top-notch. I can't wait for the next episode!</p>
-                      
+                    <div className="h-96 overflow-y-auto">
+                      {filteredReviews?.map((item) => {
+                        return <Review {...item} />;
+                      })}
                     </div>
-                    <div class="bg-gray-200 rounded-lg p-4 m-4 w-full">
-                      <div className="flex justify-between items-center m-3">
-                      
-                        <div class="flex items-center justify-center space-x-2">
-                          <svg class="text-yellow-500 w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
-                            fill="currentColor" stroke="currentColor">
-                            <path
-                              d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
-                            </path>
-                          </svg>
-                          <svg class="text-yellow-500 w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
-                            fill="currentColor" stroke="currentColor">
-                            <path
-                              d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
-                            </path>
-                          </svg>
-                          <svg class="text-yellow-500 w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
-                            fill="currentColor" stroke="currentColor">
-                            <path
-                              d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
-                            </path>
-                          </svg>
-                        </div>
-                        <p class="font-bold uppercase">John Doe</p>
-                      </div>
-                      <p class="text-xl font-light italic text-gray-700">This podcast is amazing! The storytelling and production
-                        quality are top-notch. I can't wait for the next episode!</p>
-                      
-                    </div>
-                    <div class="bg-gray-200 rounded-lg p-4 m-4 w-full">
-                      <div className="flex justify-between items-center m-3">
-                      
-                        <div class="flex items-center justify-center space-x-2">
-                          <svg class="text-yellow-500 w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
-                            fill="currentColor" stroke="currentColor">
-                            <path
-                              d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
-                            </path>
-                          </svg>
-                          <svg class="text-yellow-500 w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
-                            fill="currentColor" stroke="currentColor">
-                            <path
-                              d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
-                            </path>
-                          </svg>
-                          <svg class="text-yellow-500 w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
-                            fill="currentColor" stroke="currentColor">
-                            <path
-                              d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
-                            </path>
-                          </svg>
-                        </div>
-                        <p class="font-bold uppercase">John Doe</p>
-                      </div>
-                      <p class="text-xl font-light italic text-gray-700">This podcast is amazing! The storytelling and production
-                        quality are top-notch. I can't wait for the next episode!</p>
-                      
-                    </div>
-                   
                   </div>
                 </div>
               </div>
