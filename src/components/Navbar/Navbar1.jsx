@@ -49,9 +49,10 @@ const Navbar1 = () => {
         <div class="flex justify-between">
           <div class="flex items-center">
             <a href="/">
-              <span class="ml-2 font-semibold text-[#252C32] text-xl lg:block">
+              {/* <span class="ml-2 font-semibold text-[#252C32] text-xl lg:block">
                 Ecommerce
-              </span>
+              </span> */}
+              <img src="/roughage-logo-png.png" alt="roughage-logo" />
             </a>
           </div>
 
