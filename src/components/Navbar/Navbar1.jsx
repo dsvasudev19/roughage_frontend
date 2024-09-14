@@ -4,8 +4,8 @@ import DropDown from "./../DropDown";
 import { useNavigate } from "react-router-dom";
 import { FaAngleRight } from "react-icons/fa";
 import "./Navbar.css";
-import {CircleUserRound} from "lucide-react";
-import {HiOutlineUserCircle} from "react-icons/hi2";
+import { CircleUserRound } from "lucide-react";
+import { HiOutlineUserCircle } from "react-icons/hi2";
 import axios from "axios";
 
 const Navbar1 = () => {
@@ -13,12 +13,12 @@ const Navbar1 = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [categories,setCategories]=useState([])
+  const [categories, setCategories] = useState([]);
 
-  setTimeout(() => {
-    setLoading(false);
-    setUser(true);
-  }, 1500);
+  // setTimeout(() => {
+  //   setLoading(false);
+  //   setUser(true);
+  // }, 1500);
 
   useEffect(() => {
     if (!user && !loading) {
@@ -26,22 +26,21 @@ const Navbar1 = () => {
     }
   }, [loading, user]);
 
-  const getAllCategories=async()=>{
+  const getAllCategories = async () => {
     try {
-      const res = await axios.get("https://api.escuelajs.co/api/v1/categories")
-      console.log(res)
-      if(res.state===200){
-        setCategories(res.data)
+      const res = await axios.get("https://api.escuelajs.co/api/v1/categories");
+      console.log(res);
+      if (res.state === 200) {
+        setCategories(res.data);
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
-  useEffect(()=>{
+  useEffect(() => {
     getAllCategories();
-  },[])
-
+  }, []);
 
   return (
     <div class="bg-white">
@@ -56,7 +55,7 @@ const Navbar1 = () => {
             </a>
           </div>
 
-         {/* <div class="ml:0 md:ml-6 flex flex-1 gap-x-3">
+          {/* <div class="ml:0 md:ml-6 flex flex-1 gap-x-3">
             <div className="relative w-full hidden md:block items-center rounded-lg">
               <input
                 type="text"
@@ -166,7 +165,10 @@ const Navbar1 = () => {
               </span>
             </div>
 
-            <div class="flex cursor-pointer items-center gap-x-1 rounded-md py-2 px-4 hover:bg-gray-100">
+            <div
+              class="flex cursor-pointer items-center gap-x-1 rounded-md py-2 px-4 hover:bg-gray-100"
+              onClick={() => {window.location.href="/cart"}}
+            >
               <div class="relative">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -176,23 +178,30 @@ const Navbar1 = () => {
                 >
                   <path d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3zM16 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM6.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" />
                 </svg>
-                <span class="absolute -top-2 -right-2 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 p-2 text-xs text-white">
+                {/* <span class="absolute -top-2 -right-2 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 p-2 text-xs text-white">
                   3
-                </span>
+                </span> */}
               </div>
-              <span class="text-xl font-medium hidden lg:block">Cart</span>
+              <a href="/cart">
+                <span class="text-xl font-medium hidden lg:block">Cart</span>
+              </a>
             </div>
 
-                      {
-                          user ? <div class="ml-2 flex cursor-pointer items-center gap-x-1 rounded-md  py-2 px-1 hidden lg:block text-purple-400 hover:text-cyan-600">
-                              <CircleUserRound size={30} strokeWidth={1.5} />
-
-                          </div> : <div class="ml-2 flex cursor-pointer items-center gap-x-1 rounded-md border py-2 px-4 hover:bg-gray-100  hidden lg:block">
-                              <span class="text-lg font-normal">{
-                                  user ? <HiOutlineUserCircle /> : <a href='/login'>Sign in</a>
-                              }</span>
-                          </div>
-                      }
+            {user ? (
+              <div class="ml-2 flex cursor-pointer items-center gap-x-1 rounded-md  py-2 px-1 hidden lg:block text-purple-400 hover:text-cyan-600">
+                <CircleUserRound size={30} strokeWidth={1.5} />
+              </div>
+            ) : (
+              <div class="ml-2 flex cursor-pointer items-center gap-x-1 rounded-md border py-2 px-4 hover:bg-gray-100  hidden lg:block">
+                <span class="text-lg font-normal">
+                  {user ? (
+                    <HiOutlineUserCircle />
+                  ) : (
+                    <a href="/login">Sign in</a>
+                  )}
+                </span>
+              </div>
+            )}
           </div>
         </div>
 

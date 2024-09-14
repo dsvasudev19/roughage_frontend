@@ -11,11 +11,11 @@ const contactValidationSchema = up.object().shape({
 });
 const Contact = () => {
   const [initialValues, setInitialValues] = useState({
-    firstName: "Badal",
-    lastName: "Nayak",
-    phone: "32323232",
-    email: "badalnayak@gmail.com",
-    message: "Nothing bro",
+    firstName: "",
+    lastName: "",
+    phone: "",
+    email: "",
+    message: "",
   });
 
   const handleSubmit = async (values, { resetForm }) => {
