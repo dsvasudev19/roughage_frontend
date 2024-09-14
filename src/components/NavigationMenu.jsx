@@ -19,8 +19,8 @@ function NavigationMenu() {
                     }
                 >
                     <Dropdown.Header>
-                        <span className="block text-sm">Spack User</span>
-                        <span className="block truncate text-sm font-medium">spackUser@gmail.com</span>
+                        <span className="block text-sm">Admin</span>
+                        <span className="block truncate text-sm font-medium">admin@gmail.com</span>
                     </Dropdown.Header>
                     <Dropdown.Item>Dashboard</Dropdown.Item>
                     <Dropdown.Item>Settings</Dropdown.Item>

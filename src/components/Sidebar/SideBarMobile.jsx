@@ -89,7 +89,7 @@ function SidebarWithBurgerMenu({onChange}) {
     }
     return (
         <>
-        <Toaster position="top-right" reverseOrder={true} />
+        
             <IconButton variant="text" size="lg" onClick={openDrawer} className="block lg:hidden">
                 {isDrawerOpen ? (
                     <XMarkIcon className="h-8 w-8 stroke-2" />

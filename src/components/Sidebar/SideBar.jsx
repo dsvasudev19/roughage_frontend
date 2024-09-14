@@ -70,7 +70,7 @@ function SidebarWithContentSeparator({onChange}) {
     }
     return (
         <Card className="h-fit w-full max-w-[20rem] p-4 shadow-xl shadow-blue-gray-900/5 hidden lg:block">
-        <Toaster position="top-right" reverseOrder={true} />
+        
             <div className="flex justify-between items-center mb-2 p-4">
                 
                 <Typography variant="h5" color="blue-gray">

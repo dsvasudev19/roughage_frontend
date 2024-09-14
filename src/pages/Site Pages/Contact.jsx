@@ -7,7 +7,7 @@ const contactValidationSchema = up.object().shape({
   lastName: up.string().required("Last Name is required"),
   phone: up.string().required("Phone is required"),
   email: up.string().email("Invalid email").required("Email is required"),
-  message: up.string().required("Message is required")
+  message: up.string().required("Message is required"),
 });
 const Contact = () => {
   const [initialValues, setInitialValues] = useState({
@@ -15,7 +15,7 @@ const Contact = () => {
     lastName: "Nayak",
     phone: "32323232",
     email: "badalnayak@gmail.com",
-    message:"Nothing bro"
+    message: "Nothing bro",
   });
 
   const handleSubmit = async (values, { resetForm }) => {
@@ -37,7 +37,6 @@ const Contact = () => {
 
   return (
     <>
-      <Toaster position="top-right" reverseOrder={false} />
       <head>
         <link
           href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"

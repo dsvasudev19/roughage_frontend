@@ -8,6 +8,7 @@ import "./ProductDetails.css";
 import products from "./../../data/products";
 import Review from "../../components/Cards/ReviewCard/Review";
 import toast from "react-hot-toast";
+import axios from "axios";
 
 function ProductDetails({ ...props }) {
   const [review, setReview] = useState({
@@ -54,18 +55,45 @@ function ProductDetails({ ...props }) {
   }, []);
 
   useEffect(() => {
+    // if (id) {
+    //   const product = products?.find((i) => i.id == id);
+    //   console.log(product);
+    //   setProduct((prev) => {
+    //     return {
+    //       ...product,
+    //       variants: ["SM", "MD", "LG", "XL"],
+    //       prices: [199, 249, 329, 459],
+    //     };
+    //   });
+    // }
     if (id) {
-      const product = products?.find((i) => i.id == id);
-      console.log(product);
-      setProduct((prev) => {
-        return {
-          ...product,
-          variants: ["SM", "MD", "LG", "XL"],
-          prices: [199, 249, 329, 459],
-        };
-      });
+      getProductById();
     }
   }, [id]);
+
+  const getProductById = async () => {
+    try {
+      setLoading(true);
+      const res = await axios.get(
+        "https://api.escuelajs.co/api/v1/products/" + id
+      );
+      if (res.status === 200) {
+        console.log(res.data)
+        const product = res.data;
+        setProduct((prev) => {
+          return {
+            ...product,
+            variants: ["SM", "MD", "LG", "XL"],
+            prices: [199, 249, 329, 459],
+          };
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const postReview = async () => {
     try {
@@ -87,14 +115,14 @@ function ProductDetails({ ...props }) {
             <div class="w-full lg:sticky top-0 text-center">
               <div class="lg:h-[600px]">
                 <img
-                  src={product.images[imageIndex]}
+                  src={product?.images[imageIndex]}
                   alt="Product"
                   class="lg:w-11/12 w-full h-full rounded-xl object-cover object-top"
                 />
               </div>
               <div class="flex gap-x-8 gap-y-6 justify-center mx-auto mt-6 overflow-x-scroll">
-                {product.images.map((image, index) => (
-                  <img
+                {product?.images?.map((image, index) => (
+                  <img key={index}
                     src={image}
                     alt="Product1"
                     class={`w-20 cursor-pointer rounded-xl ${
@@ -113,7 +141,7 @@ function ProductDetails({ ...props }) {
               <div class="flex flex-wrap items-start gap-4">
                 <div>
                   <h2 class="text-2xl font-extrabold text-gray-800">
-                    {product.title} | {product.category}
+                    {product?.title} | {product?.category?.name}
                   </h2>
                   <p class="text-sm text-gray-400 mt-2">Roughage Commerce</p>
                 </div>
@@ -212,7 +240,7 @@ function ProductDetails({ ...props }) {
               <div className="my-8">
                 <h3 class="text-lg font-bold text-gray-800">Choose a Size</h3>
                 <div class="flex flex-wrap gap-4 mt-4">
-                  {product.variants.map((variant, index) => (
+                  {product?.variants.map((variant, index) => (
                     <button
                       type="button"
                       className={`w-12 h-12 border-2 hover:border-gray-800 ${
@@ -347,7 +375,6 @@ function ProductDetails({ ...props }) {
           <hr className="my-8" />
 
           <div className="gap-4 mt-8">
-            
             <section class="bg-white pb-4">
               <div class="max-w-screen-xl mx-auto">
                 {/* <h2 class="font-black text-black text-center text-3xl leading-none uppercase max-w-2xl mx-auto mb-12">What our Customers
@@ -440,7 +467,7 @@ function ProductDetails({ ...props }) {
                     <div id="reviewSubmission" className="p-3 pl-0">
                       <label className="flex gap-1 my-3">
                         {Array.from({ length: 5 }).map((_, index) => {
-                          const number=index+1;
+                          const number = index + 1;
                           if (index <= rating) {
                             return (
                               <StarIcon
@@ -449,7 +476,7 @@ function ProductDetails({ ...props }) {
                                   setRating((prev) => {
                                     return index;
                                   });
-                                  setReview({...review, rating: number });
+                                  setReview({ ...review, rating: number });
                                 }}
                               />
                             );
@@ -461,7 +488,7 @@ function ProductDetails({ ...props }) {
                                 setRating((prev) => {
                                   return index;
                                 });
-                                setReview({...review, rating: number });
+                                setReview({ ...review, rating: number });
                               }}
                             />
                           );

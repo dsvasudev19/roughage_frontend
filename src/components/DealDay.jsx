@@ -2,6 +2,8 @@ import React from 'react'
 import Header1 from './Headers/Header1'
 import Swiper from './Swiper/Swiper'
 import Card from './Cards/DealCard/Card3'
+
+
 const DealsDay = () => {
     return (
         <div className="">

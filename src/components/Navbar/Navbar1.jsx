@@ -6,11 +6,15 @@ import { FaAngleRight } from "react-icons/fa";
 import "./Navbar.css";
 import {CircleUserRound} from "lucide-react";
 import {HiOutlineUserCircle} from "react-icons/hi2";
+import axios from "axios";
+
 const Navbar1 = () => {
   // const {user,loading}=useAuth();\
   const navigate = useNavigate();
   const [user, setUser] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [categories,setCategories]=useState([])
+
   setTimeout(() => {
     setLoading(false);
     setUser(true);
@@ -21,19 +25,52 @@ const Navbar1 = () => {
       navigate("/login");
     }
   }, [loading, user]);
+
+  const getAllCategories=async()=>{
+    try {
+      const res = await axios.get("https://api.escuelajs.co/api/v1/categories")
+      console.log(res)
+      if(res.state===200){
+        setCategories(res.data)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(()=>{
+    getAllCategories();
+  },[])
+
+
   return (
     <div class="bg-white">
       <div class="border py-3 px-6">
         <div class="flex justify-between">
           <div class="flex items-center">
             <a href="/">
-              <span class="ml-2 font-semibold text-[#252C32] text-xl hidden lg:block">
+              <span class="ml-2 font-semibold text-[#252C32] text-xl lg:block">
                 Ecommerce
               </span>
             </a>
           </div>
 
-          <div class="ml:0 md:ml-6 flex flex-1 gap-x-3">
+         {/* <div class="ml:0 md:ml-6 flex flex-1 gap-x-3">
+            <div className="relative w-full hidden md:block items-center rounded-lg">
+              <input
+                type="text"
+                class="w-full h-full rounded-md  border border-[#DDE2E4] px-3 py-2 text-2xl hidden md:block "
+                placeholder="Search"
+                style={{borderRadius: "5px"}}
+              />
+              <img
+                src="/search-interface.png"
+                alt="search"
+                className="w-7 h-6 absolute right-3 bottom-0 top-3"
+              />
+            </div>
+         </div> */}
+          {/* <div class="ml:0 md:ml-6 flex flex-1 gap-x-3">
             <div class="flex cursor-pointer select-none items-center gap-x-2 rounded-md border py-2 px-4 text-black hover:bg-cyan-500 dropdown">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -52,83 +89,25 @@ const Navbar1 = () => {
               <span class="text-xl font-medium lg:block">
                 Categories
                 <ul class="dropdown-menu">
+                  {
+                    categories?.map((item)=>(
+                      <li>
+                        <a href="#" className="dropdown">
+                          <span className="flex items-center justify-center">
+                            {item?.name}
+                          </span>
+                        </a>
+                      </li>
+                    ))
+                  }
                   <li>
                     <a href="#" className="dropdown">
                       <span className="flex items-center justify-center">
-                       Category 1<FaAngleRight className="ms-5" />
+                        Category 1
                       </span>
-
-                      <ul class="dropdown-menu2">
-                        <li>
-                          <a href="#">
-                            <span className="flex items-center justify-center dropdown">
-                              Sub-Category <FaAngleRight className="ms-5" />
-                            </span>
-                              <ul class="dropdown-menu3">
-                                <li><a href="#">Child-Category</a></li>
-                              </ul>
-                          </a>
-                        </li>
-                      </ul>
                     </a>
                   </li>
-                  <li>
-                    <a href="#" className="dropdown">
-                      <span className="flex items-center justify-center">
-                        Category 2 <FaAngleRight className="ms-5" />
-                      </span>
-                      <ul class="dropdown-menu2">
-                        <li>
-                          <a href="#">
-                            <span className="flex items-center justify-center">
-                              Sub-Category <FaAngleRight className="ms-5" />
-                            </span>
-                            <ul class="dropdown-menu3">
-                                <li><a href="#">Child-Category</a></li>
-                              </ul>
-                          </a>
-                        </li>
-                      </ul>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" className="dropdown">
-                      <span className="flex items-center justify-center">
-                      Category 3 <FaAngleRight className="ms-5" />
-                      </span>
-                      <ul class="dropdown-menu2">
-                        <li>
-                          <a href="#">
-                            <span className="flex items-center justify-center">
-                            Sub-Category <FaAngleRight className="ms-5" />
-                            </span>
-                            <ul class="dropdown-menu3">
-                                <li><a href="#">Child-Category</a></li>
-                            </ul>
-                          </a>
-                        </li>
-                      </ul>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" className="dropdown">
-                      <span className="flex items-center justify-center">
-                      Category 4 <FaAngleRight className="ms-5" />
-                      </span>
-                      <ul class="dropdown-menu2">
-                        <li>
-                          <a href="#">
-                            <span className="flex items-center justify-center">
-                            Sub-Category <FaAngleRight className="ms-5" />
-                            </span>
-                            <ul class="dropdown-menu3">
-                                <li><a href="#">Child-Category</a></li>
-                              </ul>
-                          </a>
-                        </li>
-                      </ul>
-                    </a>
-                  </li>
+                  
                 </ul>
               </span>
             </div>
@@ -146,7 +125,7 @@ const Navbar1 = () => {
                 className="w-7 h-6 absolute right-3 bottom-0 top-3"
               />
             </div>
-          </div>
+          </div> */}
 
           <div class="ml-2 flex">
             <div class="flex cursor-pointer items-center gap-x-1 rounded-md py-2 px-4 hover:bg-gray-100">
